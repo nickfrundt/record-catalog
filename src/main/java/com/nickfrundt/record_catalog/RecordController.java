@@ -3,8 +3,8 @@ package com.nickfrundt.record_catalog;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.nickfrundt.record_catalog.model.VinylRecord;
 import com.nickfrundt.record_catalog.repository.VinylRecordRepository;
@@ -52,11 +52,19 @@ public class RecordController {
         if (existingRecord != null) {
             existingRecord.setTitle(updatedRecord.getTitle());
             existingRecord.setArtist(updatedRecord.getArtist());
-            existingRecord.setYear(updatedRecord.getYear());
+            existingRecord.setReleaseYear(updatedRecord.getReleaseYear());
+            existingRecord.setRuntime(updatedRecord.getRuntime());
+            existingRecord.setPriceWhenPurchased(updatedRecord.getPriceWhenPurchased());
             existingRecord.setGenre(updatedRecord.getGenre());
             existingRecord.setOwned(updatedRecord.isOwned());
             repository.save(existingRecord);
         }
+        return "redirect:/records";
+    }
+
+    @PostMapping("/records/{id}/delete")
+    public String deleteRecord(@PathVariable Long id) {
+        repository.deleteById(id);
         return "redirect:/records";
     }
 

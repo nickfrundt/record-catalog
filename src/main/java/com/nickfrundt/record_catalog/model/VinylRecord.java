@@ -19,13 +19,14 @@ public class VinylRecord {
     private int releaseYear;
     private String condition;
     private boolean owned;
+    private String genre;
 
     public VinylRecord() {
     }
 
     public VinylRecord(String title, String artist, int runtime,
                        double priceWhenPurchased, int releaseYear,
-                       String condition, boolean owned) {
+                       String condition, boolean owned, String genre) {
         this.title = title;
         this.artist = artist;
         this.runtime = runtime;
@@ -33,6 +34,7 @@ public class VinylRecord {
         this.releaseYear = releaseYear;
         this.condition = condition;
         this.owned = owned;
+        this.genre = genre;
     }
 
     public Long getId() {
@@ -93,6 +95,14 @@ public class VinylRecord {
 
     public void setOwned(boolean owned) {
         this.owned = owned;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     @Override

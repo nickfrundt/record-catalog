@@ -22,8 +22,12 @@
             <td th:text="${record.artist}"></td>
             <td th:text="${record.releaseYear}"></td>
             <td th:text="${record.condition}"></td>
+            <td th:text="${record.genre}"></td>
             <td>
                 <a th:href="@{/records/{id}/edit(id=${record.id})}">Edit</a>
+                <form th:action="@{/records/{id}/delete(id=${record.id})}" method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
             </td>
         </tr>
 
