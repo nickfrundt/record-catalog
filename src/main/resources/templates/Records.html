@@ -22,9 +22,14 @@
             <td th:text="${record.artist}"></td>
             <td th:text="${record.releaseYear}"></td>
             <td th:text="${record.condition}"></td>
+            <td>
+                <a th:href="@{/records/{id}/edit(id=${record.id})}">Edit</a>
+            </td>
         </tr>
 
     </table>
+
+    <th>Actions</th>
 
     <p>
         <a href="/records/new">Add Record</a>
