@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Record Catalog</title>
+</head>
+
+<body>
+
+    <h1>My Vinyl Records</h1>
+
+    <table border="1">
+        <tr>
+            <th>Title</th>
+            <th>Artist</th>
+            <th>Year</th>
+            <th>Condition</th>
+        </tr>
+
+        <tr th:each="record : ${records}">
+            <td th:text="${record.title}"></td>
+            <td th:text="${record.artist}"></td>
+            <td th:text="${record.releaseYear}"></td>
+            <td th:text="${record.condition}"></td>
+        </tr>
+
+    </table>
+
+    <p>
+        <a href="/records/new">Add Record</a>
+    </p>
+
+</body>
+</html>
