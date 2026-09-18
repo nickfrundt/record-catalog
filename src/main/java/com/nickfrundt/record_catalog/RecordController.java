@@ -68,4 +68,9 @@ public class RecordController {
         return "redirect:/records";
     }
 
+    @GetMapping("/ui-playground")
+    public String showUiPlayground() {
+        return "ui-playground";
+    }
+
 }
