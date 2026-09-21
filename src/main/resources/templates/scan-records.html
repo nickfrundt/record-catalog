@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Scan Records</title>
+</head>
+
+<body>
+
+    <h1>Scan Record Shelf</h1>
+
+    <form
+        action="/scan"
+        method="post"
+        enctype="multipart/form-data">
+
+        <input
+            type="file"
+            name="image"
+            accept="image/*"
+            required>
+
+        <button type="submit">
+            Scan Records
+        </button>
+
+    </form>
+
+</body>
+
+</html>
