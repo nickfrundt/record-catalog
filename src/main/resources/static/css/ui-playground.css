@@ -1,0 +1,121 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: #f5f5f5;
+}
+
+.playground {
+    min-height: 100vh;
+    padding: 60px;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+
+    perspective: 800px;
+    perspective-origin: 100% -100%;
+}
+
+.grid__item {
+    width: 260px;
+    text-decoration: none;
+    color: white;
+
+    transform-style: preserve-3d;
+}
+
+.stack {
+    position: relative;
+    width: 260px;
+    height: 260px;
+
+    transform-style: preserve-3d;
+}
+
+.stack__deco,
+.stack__figure {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    transform-origin: 50% 100%;
+}
+
+.stack__deco {
+    background: #7a6fa8;
+}
+
+.stack__deco:nth-child(1) {
+    opacity: 0.2;
+}
+
+.stack__deco:nth-child(2) {
+    opacity: 0.4;
+}
+
+.stack__deco:nth-child(3) {
+    opacity: 0.6;
+}
+
+.stack__deco:nth-child(4) {
+    opacity: 0.8;
+}
+
+.stack__figure {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+    background: #222;
+
+    z-index: 5;
+}
+
+.stack__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    display: block;
+}
+
+.grid__item-caption {
+    margin-top: 18px;
+
+    transform-style: preserve-3d;
+}
+
+.grid__item-title {
+    margin: 0 0 8px;
+
+    font-size: 20px;
+}
+
+.column {
+    display: inline-block;
+    margin-right: 10px;
+
+    opacity: 1;
+}
+
+.column__text {
+    color: #aaa;
+    font-size: 14px;
+}
+
+.grid--effect-altair {
+    perspective: 800px;
+    perspective-origin: 50% -50%;
+}
+
+.grid--effect-altair .stack__figure,
+.grid--effect-altair .stack__deco {
+    transform-origin: 50% 100%;
+}
