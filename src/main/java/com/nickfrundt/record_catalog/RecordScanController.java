@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
+import com.nickfrundt.record_catalog.model.ScannedRecord;
 
 @Controller
 public class RecordScanController {
@@ -28,10 +30,10 @@ public class RecordScanController {
 
         try {
 
-            String result =
+            List<ScannedRecord> records =
                     visionService.identifyRecords(image);
 
-            model.addAttribute("result", result);
+            model.addAttribute("records", records);
 
         } catch (Exception e) {
 

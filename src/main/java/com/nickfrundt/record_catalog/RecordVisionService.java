@@ -8,10 +8,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nickfrundt.record_catalog.model.ScanResponse;
+import com.nickfrundt.record_catalog.model.ScannedRecord;
+
 @Service
 public class RecordVisionService {
 
     private final RestClient restClient;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public RecordVisionService() {
 
@@ -23,7 +28,7 @@ public class RecordVisionService {
                 .build();
     }
 
-    public String identifyRecords(MultipartFile image) throws Exception {
+    public List<ScannedRecord> identifyRecords(MultipartFile image) throws Exception {
 
         String base64Image =
                 Base64.getEncoder().encodeToString(image.getBytes());
@@ -32,6 +37,39 @@ public class RecordVisionService {
 
         String dataUrl =
                 "data:" + contentType + ";base64," + base64Image;
+
+
+        Map<String, Object> schema = Map.of(
+                "type", "object",
+                "properties", Map.of(
+                        "records", Map.of(
+                                "type", "array",
+                                "items", Map.of(
+                                        "type", "object",
+                                        "properties", Map.of(
+                                                "artist", Map.of(
+                                                        "type", "string"
+                                                ),
+                                                "album", Map.of(
+                                                        "type", "string"
+                                                ),
+                                                "confidence", Map.of(
+                                                        "type", "number"
+                                                )
+                                        ),
+                                        "required", List.of(
+                                                "artist",
+                                                "album",
+                                                "confidence"
+                                        ),
+                                        "additionalProperties", false
+                                )
+                        )
+                ),
+                "required", List.of("records"),
+                "additionalProperties", false
+        );
+
 
         Map<String, Object> requestBody = Map.of(
                 "model", "gpt-5.6-luna",
@@ -46,15 +84,19 @@ public class RecordVisionService {
                                                 "type", "input_text",
                                                 "text",
                                                 """
-                                                Look carefully at this photo of vinyl record spines.
+                                                Examine this photo of vinyl record spines.
 
-                                                Identify every album you can reasonably recognize.
+                                                Identify every record you can reasonably recognize.
 
-                                                For now, return a simple readable list
-                                                containing the artist and album title.
+                                                For each record:
+                                                - identify the artist
+                                                - identify the album title
+                                                - give a confidence score from 0 to 1
 
-                                                If you are unsure about a record,
-                                                clearly say that you are uncertain.
+                                                Do not invent records.
+
+                                                If you cannot reasonably identify a spine,
+                                                leave it out.
                                                 """
                                         ),
 
@@ -64,8 +106,18 @@ public class RecordVisionService {
                                         )
                                 )
                         )
+                ),
+
+                "text", Map.of(
+                        "format", Map.of(
+                                "type", "json_schema",
+                                "name", "record_scan",
+                                "strict", true,
+                                "schema", schema
+                        )
                 )
         );
+
 
         Map<?, ?> response = restClient.post()
                 .uri("/responses")
@@ -73,6 +125,45 @@ public class RecordVisionService {
                 .retrieve()
                 .body(Map.class);
 
-        return response.toString();
+
+        List<?> output =
+                (List<?>) response.get("output");
+
+
+        for (Object outputItem : output) {
+
+            Map<?, ?> item =
+                    (Map<?, ?>) outputItem;
+
+            if ("message".equals(item.get("type"))) {
+
+                List<?> content =
+                        (List<?>) item.get("content");
+
+                for (Object contentItem : content) {
+
+                    Map<?, ?> contentMap =
+                            (Map<?, ?>) contentItem;
+
+                    if ("output_text".equals(
+                            contentMap.get("type"))) {
+
+                        String json =
+                                contentMap.get("text").toString();
+
+                        ScanResponse scanResponse =
+                                objectMapper.readValue(
+                                        json,
+                                        ScanResponse.class
+                                );
+
+                        return scanResponse.getRecords();
+                    }
+                }
+            }
+        }
+
+
+        return List.of();
     }
 }

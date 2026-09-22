@@ -10,7 +10,26 @@
 
     <h1>Scan Results</h1>
 
-    <pre th:text="${result}"></pre>
+    <div th:each="record : ${records}">
+
+        <h2 th:text="${record.album}">
+            Album Title
+        </h2>
+
+        <p th:text="${record.artist}">
+            Artist
+        </p>
+
+        <p>
+            Confidence:
+            <span th:text="${#numbers.formatPercent(record.confidence, 1, 0)}">
+                95%
+            </span>
+        </p>
+
+        <hr>
+
+</div>
 
 </body>
 
