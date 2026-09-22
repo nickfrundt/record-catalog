@@ -8,15 +8,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nickfrundt.record_catalog.model.ScanResponse;
 import com.nickfrundt.record_catalog.model.ScannedRecord;
+
+import tools.jackson.databind.json.JsonMapper;
 
 @Service
 public class RecordVisionService {
 
     private final RestClient restClient;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final JsonMapper objectMapper = JsonMapper.builder().build();
 
     public RecordVisionService() {
 

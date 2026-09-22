@@ -10,26 +10,61 @@
 
     <h1>Scan Results</h1>
 
-    <div th:each="record : ${records}">
+    <!-- Show an error if something went wrong -->
+    <p th:if="${error}" th:text="${error}"></p>
 
-        <h2 th:text="${record.album}">
-            Album Title
-        </h2>
+    <!-- Show a message if no records were found -->
+    <p th:if="${records != null and #lists.isEmpty(records)}">
+        No records were detected.
+    </p>
 
-        <p th:text="${record.artist}">
-            Artist
-        </p>
+    <!-- Show detected records -->
+    <form
+        th:if="${records != null and !#lists.isEmpty(records)}"
+        action="/scan/confirm"
+        method="post">
 
-        <p>
-            Confidence:
-            <span th:text="${#numbers.formatPercent(record.confidence, 1, 0)}">
-                95%
-            </span>
-        </p>
+        <div th:each="record, iter : ${records}">
 
-        <hr>
+            <input
+                type="checkbox"
+                name="selectedRecords"
+                th:value="${iter.index}"
+                checked>
 
-</div>
+            <h2 th:text="${record.album}">
+                Album Title
+            </h2>
+
+            <p th:text="${record.artist}">
+                Artist
+            </p>
+
+            <p>
+                Confidence:
+                <span
+                    th:text="${#numbers.formatPercent(record.confidence, 1, 0)}">
+                    95%
+                </span>
+            </p>
+
+            <hr>
+
+        </div>
+
+        <button type="submit">
+            Add Selected Records
+        </button>
+
+    </form>
+
+    <p>
+        <a href="/scan">Scan another image</a>
+    </p>
+
+    <p>
+        <a href="/records">Back to collection</a>
+    </p>
 
 </body>
 
