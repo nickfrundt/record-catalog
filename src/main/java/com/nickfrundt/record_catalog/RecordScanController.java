@@ -1,6 +1,7 @@
 package com.nickfrundt.record_catalog;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,10 +22,12 @@ public class RecordScanController {
 
     private final RecordVisionService visionService;
     private final VinylRecordRepository repository;
+    private final MusicBrainzService musicBrainzService;
 
-    public RecordScanController(RecordVisionService visionService, VinylRecordRepository repository) {
+    public RecordScanController(RecordVisionService visionService, VinylRecordRepository repository, MusicBrainzService musicBrainzService) {
         this.visionService = visionService;
         this.repository = repository;
+        this.musicBrainzService = musicBrainzService;
     }
 
     @GetMapping("/scan")
@@ -84,6 +87,14 @@ public class RecordScanController {
             record.setOwned(true);
 
             reviewForm.getRecords().add(record);
+
+            Map<?, ?> result =
+                musicBrainzService.searchAlbum(
+                    scanned.getArtist(),
+                    scanned.getAlbum()
+                );
+
+            System.out.println(result);
         }
 
         model.addAttribute("reviewForm", reviewForm);
