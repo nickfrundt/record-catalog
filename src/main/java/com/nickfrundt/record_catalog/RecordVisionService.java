@@ -31,14 +31,13 @@ public class RecordVisionService {
 
     public List<ScannedRecord> identifyRecords(MultipartFile image) throws Exception {
 
-        String base64Image =
-                Base64.getEncoder().encodeToString(image.getBytes());
+        String base64Image
+                = Base64.getEncoder().encodeToString(image.getBytes());
 
         String contentType = image.getContentType();
 
-        String dataUrl =
-                "data:" + contentType + ";base64," + base64Image;
-
+        String dataUrl
+                = "data:" + contentType + ";base64," + base64Image;
 
         Map<String, Object> schema = Map.of(
                 "type", "object",
@@ -71,36 +70,33 @@ public class RecordVisionService {
                 "additionalProperties", false
         );
 
-
         Map<String, Object> requestBody = Map.of(
                 "model", "gpt-5.6-luna",
-
                 "input", List.of(
                         Map.of(
                                 "role", "user",
-
                                 "content", List.of(
-
                                         Map.of(
                                                 "type", "input_text",
                                                 "text",
                                                 """
                                                 Examine this photo of vinyl record spines.
 
-                                                Identify every record you can reasonably recognize.
+                                                Read the visible text on each spine carefully.
 
-                                                For each record:
+                                                For each spine:
                                                 - identify the artist
                                                 - identify the album title
                                                 - give a confidence score from 0 to 1
 
-                                                Do not invent records.
-
-                                                If you cannot reasonably identify a spine,
-                                                leave it out.
+                                                Important:
+                                                - Only include a record when the artist and album are reasonably supported by visible text.
+                                                - Do not infer an album merely from colors, artwork, or vague resemblance.
+                                                - If only part of a title is readable, omit that record.
+                                                - Work from left to right across the shelf.
+                                                - Do not invent records.
                                                 """
                                         ),
-
                                         Map.of(
                                                 "type", "input_image",
                                                 "image_url", dataUrl
@@ -108,7 +104,6 @@ public class RecordVisionService {
                                 )
                         )
                 ),
-
                 "text", Map.of(
                         "format", Map.of(
                                 "type", "json_schema",
@@ -119,41 +114,38 @@ public class RecordVisionService {
                 )
         );
 
-
         Map<?, ?> response = restClient.post()
                 .uri("/responses")
                 .body(requestBody)
                 .retrieve()
                 .body(Map.class);
 
-
-        List<?> output =
-                (List<?>) response.get("output");
-
+        List<?> output
+                = (List<?>) response.get("output");
 
         for (Object outputItem : output) {
 
-            Map<?, ?> item =
-                    (Map<?, ?>) outputItem;
+            Map<?, ?> item
+                    = (Map<?, ?>) outputItem;
 
             if ("message".equals(item.get("type"))) {
 
-                List<?> content =
-                        (List<?>) item.get("content");
+                List<?> content
+                        = (List<?>) item.get("content");
 
                 for (Object contentItem : content) {
 
-                    Map<?, ?> contentMap =
-                            (Map<?, ?>) contentItem;
+                    Map<?, ?> contentMap
+                            = (Map<?, ?>) contentItem;
 
                     if ("output_text".equals(
                             contentMap.get("type"))) {
 
-                        String json =
-                                contentMap.get("text").toString();
+                        String json
+                                = contentMap.get("text").toString();
 
-                        ScanResponse scanResponse =
-                                objectMapper.readValue(
+                        ScanResponse scanResponse
+                                = objectMapper.readValue(
                                         json,
                                         ScanResponse.class
                                 );
@@ -163,7 +155,6 @@ public class RecordVisionService {
                 }
             }
         }
-
 
         return List.of();
     }

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Review Records</title>
+</head>
+
+<body>
+
+    <h1>Review Records</h1>
+
+    <p>
+        Check the information before adding these records to your collection.
+    </p>
+
+    <form
+        action="/scan/save"
+        method="post"
+        th:object="${reviewForm}">
+
+        <div th:each="record, iter : *{records}">
+
+            <h2>
+                Record
+                <span th:text="${iter.index + 1}">1</span>
+            </h2>
+
+            <label>Artist</label>
+            <input
+                type="text"
+                th:field="*{records[__${iter.index}__].artist}">
+
+            <br><br>
+
+            <label>Album</label>
+            <input
+                type="text"
+                th:field="*{records[__${iter.index}__].title}">
+
+            <br><br>
+
+            <label>Release Year</label>
+            <input
+                type="number"
+                th:field="*{records[__${iter.index}__].releaseYear}">
+
+            <br><br>
+
+            <label>Genre</label>
+            <input
+                type="text"
+                th:field="*{records[__${iter.index}__].genre}">
+
+            <br><br>
+
+            <label>Condition</label>
+            <input
+                type="text"
+                th:field="*{records[__${iter.index}__].condition}">
+
+            <br><br>
+
+            <label>Purchase Price</label>
+            <input
+                type="number"
+                step="0.01"
+                th:field="*{records[__${iter.index}__].priceWhenPurchased}">
+
+            <br><br>
+
+            <label>Runtime</label>
+            <input
+                type="number"
+                th:field="*{records[__${iter.index}__].runtime}">
+
+            <input
+                type="hidden"
+                th:field="*{records[__${iter.index}__].owned}">
+
+            <hr>
+
+        </div>
+
+        <button type="submit">
+            Add Records to Collection
+        </button>
+
+    </form>
+
+</body>
+</html>

@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.nickfrundt.record_catalog.model.ScanReviewForm;
 import com.nickfrundt.record_catalog.model.ScannedRecord;
+import com.nickfrundt.record_catalog.model.VinylRecord;
+import com.nickfrundt.record_catalog.repository.VinylRecordRepository;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -17,9 +20,11 @@ import jakarta.servlet.http.HttpSession;
 public class RecordScanController {
 
     private final RecordVisionService visionService;
+    private final VinylRecordRepository repository;
 
-    public RecordScanController(RecordVisionService visionService) {
+    public RecordScanController(RecordVisionService visionService, VinylRecordRepository repository) {
         this.visionService = visionService;
+        this.repository = repository;
     }
 
     @GetMapping("/scan")
@@ -56,7 +61,8 @@ public class RecordScanController {
     @PostMapping("/scan/confirm")
     public String confirmScan(
             @RequestParam(value = "selectedRecords", required = false) List<Integer> selectedRecords,
-            HttpSession session) {
+            HttpSession session,
+            Model model) {
 
         List<ScannedRecord> scanResults
                 = (List<ScannedRecord>) session.getAttribute("scanResults");
@@ -65,15 +71,34 @@ public class RecordScanController {
             return "redirect:/records";
         }
 
+        ScanReviewForm reviewForm = new ScanReviewForm();
+
         for (Integer index : selectedRecords) {
 
             ScannedRecord scanned = scanResults.get(index);
 
-            System.out.println(
-                    scanned.getArtist() + " - " + scanned.getAlbum()
-            );
+            VinylRecord record = new VinylRecord();
+
+            record.setArtist(scanned.getArtist());
+            record.setTitle(scanned.getAlbum());
+            record.setOwned(true);
+
+            reviewForm.getRecords().add(record);
         }
 
-        return "redirect:/records";
+        model.addAttribute("reviewForm", reviewForm);
+
+        return "scan-review";
+    }
+
+    @PostMapping("/scan/save")
+    public String saveReviewedRecords(
+            ScanReviewForm reviewForm,
+            HttpSession session) {
+        for (VinylRecord record : reviewForm.getRecords()) {
+            repository.save(record);
+        }
+        session.removeAttribute("scanResults");
+        return "redirect:/records"; 
     }
 }
