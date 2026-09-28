@@ -1,9 +1,12 @@
 package com.nickfrundt.record_catalog;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+
+import com.nickfrundt.record_catalog.model.RecordMetadata;
 
 @Service
 public class MusicBrainzService {
@@ -35,5 +38,51 @@ public class MusicBrainzService {
                         .build())
                 .retrieve()
                 .body(Map.class);
+    }
+
+    public RecordMetadata findMetadata(String artist, String album) {
+
+        Map<?, ?> response = searchAlbum(artist, album);
+
+        if (response == null) {
+            return new RecordMetadata(null, 0, false);
+        }
+
+        Object results = response.get("release-groups");
+
+        if (!(results instanceof List<?> groups) || groups.isEmpty()) {
+            return new RecordMetadata(null, 0, false);
+        }
+
+        Map<?, ?> bestMatch = (Map<?, ?>) groups.get(0);
+
+        int matchScore = 0;
+
+        Object score = bestMatch.get("score");
+
+        if (score instanceof Number number) {
+            matchScore = number.intValue();
+        }
+
+        Integer releaseYear = null;
+
+        Object date = bestMatch.get("first-release-date");
+
+        if (date instanceof String dateString && dateString.length() >= 4) {
+            try {
+                releaseYear
+                        = Integer.parseInt(dateString.substring(0, 4));
+            } catch (NumberFormatException e) {
+                releaseYear = null;
+            }
+        }
+
+        boolean verified = matchScore >= 90;
+
+        return new RecordMetadata(
+                releaseYear,
+                matchScore,
+                verified
+        );
     }
 }

@@ -1,7 +1,6 @@
 package com.nickfrundt.record_catalog;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.nickfrundt.record_catalog.model.RecordMetadata;
 import com.nickfrundt.record_catalog.model.ScanReviewForm;
 import com.nickfrundt.record_catalog.model.ScannedRecord;
 import com.nickfrundt.record_catalog.model.VinylRecord;
@@ -24,7 +24,11 @@ public class RecordScanController {
     private final VinylRecordRepository repository;
     private final MusicBrainzService musicBrainzService;
 
-    public RecordScanController(RecordVisionService visionService, VinylRecordRepository repository, MusicBrainzService musicBrainzService) {
+    public RecordScanController(
+            RecordVisionService visionService,
+            VinylRecordRepository repository,
+            MusicBrainzService musicBrainzService) {
+
         this.visionService = visionService;
         this.repository = repository;
         this.musicBrainzService = musicBrainzService;
@@ -43,8 +47,8 @@ public class RecordScanController {
 
         try {
 
-            List<ScannedRecord> records
-                    = visionService.identifyRecords(image);
+            List<ScannedRecord> records =
+                    visionService.identifyRecords(image);
 
             model.addAttribute("records", records);
 
@@ -63,12 +67,13 @@ public class RecordScanController {
 
     @PostMapping("/scan/confirm")
     public String confirmScan(
-            @RequestParam(value = "selectedRecords", required = false) List<Integer> selectedRecords,
+            @RequestParam(value = "selectedRecords", required = false)
+            List<Integer> selectedRecords,
             HttpSession session,
             Model model) {
 
-        List<ScannedRecord> scanResults
-                = (List<ScannedRecord>) session.getAttribute("scanResults");
+        List<ScannedRecord> scanResults =
+                (List<ScannedRecord>) session.getAttribute("scanResults");
 
         if (scanResults == null || selectedRecords == null) {
             return "redirect:/records";
@@ -76,7 +81,9 @@ public class RecordScanController {
 
         ScanReviewForm reviewForm = new ScanReviewForm();
 
-        for (Integer index : selectedRecords) {
+        for (int i = 0; i < selectedRecords.size(); i++) {
+
+            Integer index = selectedRecords.get(i);
 
             ScannedRecord scanned = scanResults.get(index);
 
@@ -86,15 +93,47 @@ public class RecordScanController {
             record.setTitle(scanned.getAlbum());
             record.setOwned(true);
 
-            reviewForm.getRecords().add(record);
+            try {
 
-            Map<?, ?> result =
-                musicBrainzService.searchAlbum(
-                    scanned.getArtist(),
-                    scanned.getAlbum()
+                RecordMetadata metadata =
+                        musicBrainzService.findMetadata(
+                                scanned.getArtist(),
+                                scanned.getAlbum()
+                        );
+
+                if (metadata.getReleaseYear() != null) {
+                    record.setReleaseYear(metadata.getReleaseYear());
+                }
+
+                System.out.println(
+                        scanned.getArtist()
+                        + " - "
+                        + scanned.getAlbum()
+                        + " | MusicBrainz score: "
+                        + metadata.getMatchScore()
+                        + " | Verified: "
+                        + metadata.isVerified()
                 );
 
-            System.out.println(result);
+            } catch (Exception e) {
+
+                System.out.println(
+                        "MusicBrainz lookup failed for "
+                        + scanned.getArtist()
+                        + " - "
+                        + scanned.getAlbum()
+                );
+            }
+
+            reviewForm.getRecords().add(record);
+
+            if (i < selectedRecords.size() - 1) {
+                try {
+                    Thread.sleep(1100);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
         }
 
         model.addAttribute("reviewForm", reviewForm);
@@ -106,10 +145,13 @@ public class RecordScanController {
     public String saveReviewedRecords(
             ScanReviewForm reviewForm,
             HttpSession session) {
+
         for (VinylRecord record : reviewForm.getRecords()) {
             repository.save(record);
         }
+
         session.removeAttribute("scanResults");
-        return "redirect:/records"; 
+
+        return "redirect:/records";
     }
 }
