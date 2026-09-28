@@ -26,6 +26,19 @@
                 <span th:text="${iter.index + 1}">1</span>
             </h2>
 
+            <img
+                th:if="*{records[__${iter.index}__].coverUrl != null}"
+                th:src="*{records[__${iter.index}__].coverUrl}"
+                alt="Matched cover"
+                width="120"
+                onerror="this.style.display='none';">
+
+            <input
+                type="hidden"
+                th:field="*{records[__${iter.index}__].musicBrainzId}">
+
+            <br><br>
+
             <label>Artist</label>
             <input
                 type="text"

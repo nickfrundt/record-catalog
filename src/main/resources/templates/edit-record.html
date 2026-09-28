@@ -57,5 +57,13 @@
 
     </form>
 
+    <form th:action="@{/records/{id}/delete(id=${vinylRecord.id})}"
+          method="post"
+          onsubmit="return confirm('Delete this record?');">
+        <button type="submit">Delete Record</button>
+    </form>
+
+    <p><a th:href="@{/records}">Back to collection</a></p>
+
 </body>
 </html>

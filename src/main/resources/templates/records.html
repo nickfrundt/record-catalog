@@ -2,42 +2,74 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
     <title>Record Catalog</title>
+
+    <link rel="stylesheet" th:href="@{/css/ui-playground.css}">
 </head>
 
 <body>
 
-    <h1>My Vinyl Records</h1>
+<main class="playground">
 
-    <table border="1">
-        <tr>
-            <th>Title</th>
-            <th>Artist</th>
-            <th>Year</th>
-            <th>Condition</th>
-        </tr>
+    <header class="page-header">
+        <h1>My Vinyl Records</h1>
 
-        <tr th:each="record : ${records}">
-            <td th:text="${record.title}"></td>
-            <td th:text="${record.artist}"></td>
-            <td th:text="${record.releaseYear}"></td>
-            <td th:text="${record.condition}"></td>
-            <td th:text="${record.genre}"></td>
-            <td>
-                <a th:href="@{/records/{id}/edit(id=${record.id})}">Edit</a>
-                <form th:action="@{/records/{id}/delete(id=${record.id})}" method="post" style="display:inline;">
-                    <button type="submit">Delete</button>
-                </form>
-            </td>
-        </tr>
+        <nav class="page-actions">
+            <a th:href="@{/records/new}">Add Record</a>
+            <a th:href="@{/scan}">Scan Shelf</a>
+        </nav>
+    </header>
 
-    </table>
-
-    <th>Actions</th>
-
-    <p>
-        <a href="/records/new">Add Record</a>
+    <p class="empty" th:if="${#lists.isEmpty(records)}">
+        No records yet. Add one or scan a shelf to get started.
     </p>
+
+    <div class="grid grid--effect-altair">
+
+        <a th:each="record : ${records}"
+           th:href="@{/records/{id}/edit(id=${record.id})}"
+           class="grid__item">
+
+            <div class="stack">
+
+                <div class="stack__deco"></div>
+                <div class="stack__deco"></div>
+                <div class="stack__deco"></div>
+                <div class="stack__deco"></div>
+
+                <div class="stack__figure">
+                    <img class="stack__img"
+                         th:src="${record.coverUrl != null} ? ${record.coverUrl} : @{/images/no-cover.svg}"
+                         th:alt="${record.title}"
+                         loading="lazy"
+                         onerror="this.onerror=null;this.src='/images/no-cover.svg';">
+                </div>
+
+            </div>
+
+            <div class="grid__item-caption">
+
+                <h3 class="grid__item-title" th:text="${record.title}">Album</h3>
+
+                <div class="column">
+                    <span class="column__text" th:text="${record.artist}">Artist</span>
+                </div>
+
+                <div class="column" th:if="${record.releaseYear > 0}">
+                    <span class="column__text" th:text="${record.releaseYear}">2026</span>
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</main>
+
+<script th:src="@{/js/anime.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
 
 </body>
 </html>

@@ -119,3 +119,38 @@ body {
 .grid--effect-altair .stack__deco {
     transform-origin: 50% 100%;
 }
+
+/* ---- Collection page ---- */
+
+.page-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    margin-bottom: 50px;
+}
+
+.page-header h1 {
+    margin: 0;
+}
+
+.page-actions a {
+    margin-left: 12px;
+    padding: 8px 16px;
+
+    color: #f5f5f5;
+    text-decoration: none;
+
+    border: 1px solid #7a6fa8;
+    border-radius: 4px;
+}
+
+.page-actions a:hover {
+    background: #7a6fa8;
+}
+
+.empty {
+    color: #aaa;
+}

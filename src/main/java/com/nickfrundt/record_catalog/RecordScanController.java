@@ -105,6 +105,8 @@ public class RecordScanController {
                     record.setReleaseYear(metadata.getReleaseYear());
                 }
 
+                record.setMusicBrainzId(metadata.getMusicBrainzId());
+
                 System.out.println(
                         scanned.getArtist()
                         + " - "

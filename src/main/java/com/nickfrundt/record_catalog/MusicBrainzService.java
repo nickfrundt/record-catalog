@@ -79,10 +79,21 @@ public class MusicBrainzService {
 
         boolean verified = matchScore >= 90;
 
+        // Only keep the ID for confident matches so a weak match can't attach
+        // the wrong cover art to a record.
+        String musicBrainzId = null;
+
+        Object id = bestMatch.get("id");
+
+        if (verified && id instanceof String idString) {
+            musicBrainzId = idString;
+        }
+
         return new RecordMetadata(
                 releaseYear,
                 matchScore,
-                verified
+                verified,
+                musicBrainzId
         );
     }
 }

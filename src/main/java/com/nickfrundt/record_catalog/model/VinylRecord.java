@@ -20,6 +20,7 @@ public class VinylRecord {
     private String condition;
     private boolean owned;
     private String genre;
+    private String musicBrainzId;
 
     public VinylRecord() {
     }
@@ -103,6 +104,27 @@ public class VinylRecord {
 
     public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public String getMusicBrainzId() {
+        return musicBrainzId;
+    }
+
+    public void setMusicBrainzId(String musicBrainzId) {
+        this.musicBrainzId = musicBrainzId;
+    }
+
+    /**
+     * Cover art URL from the Cover Art Archive, or null if this record hasn't
+     * been matched to a MusicBrainz release group. The browser loads it
+     * directly (the archive redirects to the image), so nothing is stored.
+     */
+    public String getCoverUrl() {
+        if (musicBrainzId == null || musicBrainzId.isBlank()) {
+            return null;
+        }
+        return "https://coverartarchive.org/release-group/"
+                + musicBrainzId + "/front-500";
     }
 
     @Override
