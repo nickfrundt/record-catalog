@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Profile | Record Catalog</title>
+
+    <link rel="stylesheet" th:href="@{/css/ui-playground.css}">
+</head>
+
+<body>
+
+<main class="collection-page">
+
+    <header class="site-header">
+
+        <a th:href="@{/records}" class="brand">
+            <span class="brand-mark">RC</span>
+            <span class="brand-name">Record Catalog</span>
+        </a>
+
+        <nav class="site-nav">
+
+            <a th:href="@{/records}" class="nav-link">
+                Collection
+            </a>
+
+            <a th:href="@{/scan}" class="nav-link">
+                Scan
+            </a>
+
+            <a th:href="@{/profile}" class="nav-link active">
+                Profile
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <section class="collection-hero">
+
+        <div class="hero-copy">
+
+            <p class="eyebrow">
+                PROFILE
+            </p>
+
+            <h1 th:text="${user.username}">
+                Username
+            </h1>
+
+            <p class="hero-description">
+                Manage your account and collections.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="profile-section">
+
+        <div class="profile-card">
+
+            <p class="eyebrow">
+                ACCOUNT
+            </p>
+
+            <div class="profile-field">
+
+                <span class="profile-label">
+                    Username
+                </span>
+
+                <span
+                    class="profile-value"
+                    th:text="${user.username}">
+                    username
+                </span>
+
+            </div>
+
+            <div class="profile-field">
+
+                <span class="profile-label">
+                    Email
+                </span>
+
+                <span
+                    class="profile-value"
+                    th:text="${user.email}">
+                    email@example.com
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="profile-card">
+
+            <p class="eyebrow">
+                COLLECTIONS
+            </p>
+
+            <h2>Your Collections</h2>
+
+            <p class="profile-muted">
+                Custom collections are coming next.
+            </p>
+
+            <button
+                class="button button--secondary"
+                disabled>
+                Create Collection
+            </button>
+
+        </div>
+
+
+        <div class="profile-card">
+
+            <p class="eyebrow">
+                SESSION
+            </p>
+
+            <form th:action="@{/logout}" method="post">
+
+                <button
+                    type="submit"
+                    class="button button--secondary">
+
+                    Log Out
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+
+</html>

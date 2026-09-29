@@ -774,6 +774,144 @@ button {
     transform: translateY(3px);
 }
 
+/* =========================
+   PROFILE
+   ========================= */
+
+.profile-section {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(280px, 1fr));
+
+    gap: 24px;
+
+    padding: 60px 0;
+}
+
+.profile-card {
+    padding: 28px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.profile-card h2 {
+    margin: 0 0 18px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-weight: 400;
+}
+
+.profile-field {
+    display: flex;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 16px 0;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.profile-field:last-child {
+    border-bottom: none;
+}
+
+.profile-label {
+    color: var(--text-muted);
+
+    font-size: 13px;
+}
+
+.profile-value {
+    font-size: 14px;
+}
+
+.profile-muted {
+    color: var(--text-muted);
+
+    line-height: 1.6;
+}
+
+/* =========================
+   COLLECTIONS
+   ========================= */
+
+.collections-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(260px, 1fr));
+
+    gap: 22px;
+}
+
+.collection-card {
+    min-height: 190px;
+
+    padding: 28px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    transition:
+        transform 180ms ease,
+        border-color 180ms ease;
+}
+
+.collection-card:hover {
+    transform: translateY(-4px);
+
+    border-color: var(--accent);
+}
+
+.collection-card h2 {
+    margin: 0 0 12px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 28px;
+    font-weight: 400;
+}
+
+.collection-create {
+    max-width: 650px;
+
+    margin-top: 80px;
+
+    padding: 32px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.collection-create h2 {
+    margin-top: 0;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-weight: 400;
+}
+
+.collection-create textarea {
+    resize: vertical;
+}
 
 @media (max-width: 420px) {
 

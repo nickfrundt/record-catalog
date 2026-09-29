@@ -6,7 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.nickfrundt.record_catalog.model.RecordCollection;
 import com.nickfrundt.record_catalog.model.User;
+import com.nickfrundt.record_catalog.repository.RecordCollectionRepository;
 import com.nickfrundt.record_catalog.repository.UserRepository;
 
 @Controller
@@ -14,13 +16,15 @@ public class AuthController {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
+    private final RecordCollectionRepository recordCollectionRepository;
     public AuthController(
             UserRepository userRepository,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder,
+            RecordCollectionRepository recordCollectionRepository) {
 
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.recordCollectionRepository = recordCollectionRepository;
     }
 
     @GetMapping("/login")
@@ -63,6 +67,14 @@ public class AuthController {
         );
 
         userRepository.save(user);
+
+        RecordCollection defaultCollection = new RecordCollection();
+
+        defaultCollection.setName("My Collection");
+        defaultCollection.setDescription("My main record collection.");
+        defaultCollection.setUser(user);
+
+        recordCollectionRepository.save(defaultCollection);
 
         return "redirect:/login?registered";
     }

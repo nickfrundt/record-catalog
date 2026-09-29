@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Collections | Record Catalog</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/ui-playground.css}">
+</head>
+
+<body>
+
+<main class="collection-page">
+
+    <header class="site-header">
+
+        <a th:href="@{/records}" class="brand">
+            <span class="brand-mark">RC</span>
+            <span class="brand-name">Record Catalog</span>
+        </a>
+
+        <nav class="site-nav">
+
+            <a th:href="@{/records}"
+               class="nav-link">
+                Records
+            </a>
+
+            <a th:href="@{/collections}"
+               class="nav-link active">
+                Collections
+            </a>
+
+            <a th:href="@{/scan}"
+               class="nav-link">
+                Scan
+            </a>
+
+            <a th:href="@{/profile}"
+               class="nav-link">
+                Profile
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <section class="collection-hero">
+
+        <div class="hero-copy">
+
+            <p class="eyebrow">
+                YOUR LIBRARY
+            </p>
+
+            <h1>
+                Collections
+            </h1>
+
+            <p class="hero-description">
+                Organize your records into separate catalogs,
+                shelves, wishlists, or whatever else you want.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="collection-section">
+
+        <div class="section-heading">
+
+            <div>
+                <p class="eyebrow">
+                    YOUR COLLECTIONS
+                </p>
+
+                <h2>
+                    Library
+                </h2>
+            </div>
+
+        </div>
+
+
+        <div class="collections-grid">
+
+            <div
+                class="collection-card"
+                th:each="collection : ${collections}">
+
+                <p class="eyebrow">
+                    COLLECTION
+                </p>
+
+                <h2 th:text="${collection.name}">
+                    My Collection
+                </h2>
+
+                <p
+                    class="profile-muted"
+                    th:text="${collection.description}">
+                    Description
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="collection-create">
+
+        <p class="eyebrow">
+            NEW COLLECTION
+        </p>
+
+        <h2>
+            Create a Collection
+        </h2>
+
+        <form
+            th:action="@{/collections}"
+            th:object="${newCollection}"
+            method="post">
+
+            <label for="name">
+                Name
+            </label>
+
+            <input
+                id="name"
+                type="text"
+                th:field="*{name}"
+                placeholder="Wishlist"
+                required>
+
+            <br><br>
+
+            <label for="description">
+                Description
+            </label>
+
+            <textarea
+                id="description"
+                th:field="*{description}"
+                placeholder="Records I want to pick up..."
+                rows="4">
+            </textarea>
+
+            <br><br>
+
+            <button
+                type="submit"
+                class="button button--primary">
+
+                Create Collection
+
+            </button>
+
+        </form>
+
+    </section>
+
+</main>
+
+</body>
+
+</html>
