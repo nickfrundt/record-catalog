@@ -1,36 +1,351 @@
+:root {
+    --background: #0d0d0f;
+    --surface: #161619;
+    --surface-light: #1d1d21;
+
+    --text: #f1efe9;
+    --text-muted: #96939d;
+
+    --accent: #897da9;
+    --accent-light: #ada1c9;
+
+    --border: rgba(255, 255, 255, 0.09);
+
+    --max-width: 1500px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #111;
-    color: #f5f5f5;
+
+    background: var(--background);
+    color: var(--text);
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
 }
 
-.playground {
-    min-height: 100vh;
-    padding: 60px;
+img {
+    display: block;
+    max-width: 100%;
 }
 
-.grid {
+a {
+    color: inherit;
+}
+
+.collection-page {
+    width: min(calc(100% - 64px), var(--max-width));
+    margin: 0 auto;
+
+    padding-bottom: 100px;
+}
+
+
+/* =========================
+   HEADER
+   ========================= */
+
+.site-header {
+    height: 86px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    text-decoration: none;
+}
+
+.brand-mark {
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.brand-name {
+    font-weight: 600;
+}
+
+.site-nav {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-link {
+    color: var(--text-muted);
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    transition: color 150ms ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--text);
+}
+
+
+/* =========================
+   HERO
+   ========================= */
+
+.collection-hero {
+    min-height: 310px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 60px;
+
+    padding: 70px 0 55px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.hero-copy {
+    max-width: 700px;
+}
+
+.eyebrow {
+    margin: 0 0 14px;
+
+    color: var(--accent-light);
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+}
+
+.collection-hero h1 {
+    margin: 0;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: clamp(52px, 7vw, 96px);
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+}
+
+.hero-description {
+    max-width: 550px;
+
+    margin: 26px 0 0;
+
+    color: var(--text-muted);
+
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.hero-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 50px;
+    gap: 12px;
+
+    padding-bottom: 10px;
+}
+
+
+/* =========================
+   BUTTONS
+   ========================= */
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 44px;
+
+    padding: 0 20px;
+
+    border-radius: 100px;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition:
+        transform 150ms ease,
+        background 150ms ease,
+        border-color 150ms ease;
+}
+
+.button:hover {
+    transform: translateY(-2px);
+}
+
+.button--primary {
+    background: var(--text);
+    color: var(--background);
+}
+
+.button--primary:hover {
+    background: #ffffff;
+}
+
+.button--secondary {
+    border: 1px solid var(--border);
+    background: var(--surface);
+
+    color: var(--text);
+}
+
+.button--secondary:hover {
+    border-color: var(--accent);
+    background: var(--surface-light);
+}
+
+
+/* =========================
+   COLLECTION SUMMARY
+   ========================= */
+
+.collection-summary {
+    padding: 35px 0;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.summary-item {
+    display: flex;
+    align-items: baseline;
+
+    gap: 10px;
+}
+
+.summary-number {
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 32px;
+}
+
+.summary-label {
+    color: var(--text-muted);
+
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+
+/* =========================
+   COLLECTION SECTION
+   ========================= */
+
+.collection-section {
+    padding-top: 70px;
+}
+
+.section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    margin-bottom: 45px;
+}
+
+.section-heading h2 {
+    margin: 0;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 34px;
+    font-weight: 400;
+}
+
+
+/* =========================
+   RECORD GRID
+   ========================= */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+
+    gap: 55px 35px;
 
     perspective: 800px;
     perspective-origin: 100% -100%;
 }
 
 .grid__item {
-    width: 260px;
+    width: 100%;
+
     text-decoration: none;
-    color: white;
+    color: var(--text);
 
     transform-style: preserve-3d;
 }
 
+.grid__item-title {
+    margin: 0;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 20px;
+    font-weight: 400;
+
+    line-height: 1.25;
+
+    transition: color 150ms ease;
+}
+
+
+/* =========================
+   RECORD STACK
+   ========================= */
+
 .stack {
     position: relative;
-    width: 260px;
-    height: 260px;
+
+    width: 100%;
+    aspect-ratio: 1 / 1;
 
     transform-style: preserve-3d;
 }
@@ -38,6 +353,7 @@ body {
 .stack__deco,
 .stack__figure {
     position: absolute;
+
     top: 0;
     left: 0;
 
@@ -48,43 +364,53 @@ body {
 }
 
 .stack__deco {
-    background: #7a6fa8;
+    background: var(--accent);
 }
 
 .stack__deco:nth-child(1) {
-    opacity: 0.2;
+    opacity: 0.16;
 }
 
 .stack__deco:nth-child(2) {
-    opacity: 0.4;
+    opacity: 0.3;
 }
 
 .stack__deco:nth-child(3) {
-    opacity: 0.6;
+    opacity: 0.48;
 }
 
 .stack__deco:nth-child(4) {
-    opacity: 0.8;
+    opacity: 0.68;
 }
 
 .stack__figure {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     overflow: hidden;
-    background: #222;
+
+    background: var(--surface);
 
     z-index: 5;
+
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.25);
 }
 
 .stack__img {
     width: 100%;
     height: 100%;
+
     object-fit: cover;
 
     display: block;
 }
+
+
+/* =========================
+   RECORD CAPTION
+   ========================= */
 
 .grid__item-caption {
     margin-top: 18px;
@@ -93,22 +419,44 @@ body {
 }
 
 .grid__item-title {
-    margin: 0 0 8px;
+    margin: 0;
 
-    font-size: 20px;
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.3;
+
+    transition: color 150ms ease;
 }
 
-.column {
-    display: inline-block;
-    margin-right: 10px;
+.record-artist {
+    margin: 6px 0 0;
 
-    opacity: 1;
-}
+    color: var(--text-muted);
 
-.column__text {
-    color: #aaa;
     font-size: 14px;
 }
+
+.record-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin-top: 9px;
+
+    color: #706d76;
+
+    font-size: 12px;
+}
+
+.record-meta span:not(:last-child)::after {
+    content: "•";
+    margin-left: 10px;
+}
+
+
+/* =========================
+   ALTAIR EFFECT
+   ========================= */
 
 .grid--effect-altair {
     perspective: 800px;
@@ -120,37 +468,320 @@ body {
     transform-origin: 50% 100%;
 }
 
-/* ---- Collection page ---- */
 
-.page-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 20px;
+/* =========================
+   EMPTY STATE
+   ========================= */
 
-    margin-bottom: 50px;
+.empty-state {
+    padding: 100px 0;
+
+    text-align: center;
 }
 
-.page-header h1 {
-    margin: 0;
+.empty-state h2 {
+    margin: 0 0 12px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 40px;
+    font-weight: 400;
 }
 
-.page-actions a {
-    margin-left: 12px;
-    padding: 8px 16px;
+.empty-state p {
+    max-width: 460px;
 
-    color: #f5f5f5;
-    text-decoration: none;
+    margin: 0 auto 30px;
 
-    border: 1px solid #7a6fa8;
+    color: var(--text-muted);
+
+    line-height: 1.6;
+}
+
+
+/* =========================
+   GENERIC FORM STYLES
+   Useful for later pages
+   ========================= */
+
+form {
+    color: var(--text);
+}
+
+label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--text-muted);
+
+    font-size: 13px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    background: var(--surface);
+    color: var(--text);
+
+    font: inherit;
+
+    outline: none;
+
+    transition:
+        border-color 150ms ease,
+        background 150ms ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--accent);
+    background: var(--surface-light);
+}
+
+button {
+    font: inherit;
+}
+
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 900px) {
+
+    .collection-page {
+        width: min(calc(100% - 36px), var(--max-width));
+    }
+
+    .collection-hero {
+        min-height: auto;
+
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 35px;
+
+        padding: 55px 0 45px;
+    }
+
+    .hero-actions {
+        padding-bottom: 0;
+    }
+
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+
+        gap: 45px 24px;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .site-header {
+        height: auto;
+
+        padding: 22px 0;
+
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .brand-name {
+        display: none;
+    }
+
+    .site-nav {
+        gap: 18px;
+    }
+
+    .collection-hero h1 {
+        font-size: 50px;
+    }
+
+    .hero-description {
+        font-size: 15px;
+    }
+
+    .hero-actions {
+        width: 100%;
+    }
+
+    .button {
+        width: 100%;
+    }
+
+    .collection-summary {
+        padding: 25px 0;
+    }
+
+    .collection-section {
+        padding-top: 50px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 38px 18px;
+    }
+
+    .grid__item-title {
+        font-size: 16px;
+    }
+
+    .record-artist {
+        font-size: 13px;
+    }
+
+    .record-meta {
+        font-size: 11px;
+    }
+}
+
+/* =========================
+   RECORD CARD POLISH
+   ========================= */
+
+.stack__figure {
     border-radius: 4px;
+
+    transition:
+        box-shadow 250ms ease,
+        filter 250ms ease;
 }
 
-.page-actions a:hover {
-    background: #7a6fa8;
+.stack__img {
+    transition:
+        transform 350ms ease,
+        filter 350ms ease;
 }
 
-.empty {
-    color: #aaa;
+.grid__item:hover .stack__img {
+    transform: scale(1.035);
+    filter: brightness(0.75);
+}
+
+.grid__item:hover .stack__figure {
+    box-shadow:
+        0 18px 55px rgba(0, 0, 0, 0.5);
+}
+
+
+/* Hover overlay */
+
+.record-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+    align-items: flex-end;
+
+    padding: 20px;
+
+    background:
+        linear-gradient(to top,
+            rgba(8, 8, 10, 0.82),
+            rgba(8, 8, 10, 0.08) 55%,
+            transparent);
+
+    opacity: 0;
+
+    transition: opacity 250ms ease;
+
+    pointer-events: none;
+}
+
+.grid__item:hover .record-overlay {
+    opacity: 1;
+}
+
+.record-overlay span {
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    transform: translateY(8px);
+
+    transition: transform 250ms ease;
+}
+
+.grid__item:hover .record-overlay span {
+    transform: translateY(0);
+}
+
+
+/* Metadata */
+
+.record-meta {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    margin-top: 12px;
+}
+
+.meta-pill {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 24px;
+
+    padding: 0 9px;
+
+    border: 1px solid var(--border);
+    border-radius: 100px;
+
+    background: rgba(255, 255, 255, 0.025);
+
+    color: var(--text-muted);
+
+    font-size: 11px;
+}
+
+
+/* Remove old bullet styling */
+
+.record-meta span:not(:last-child)::after {
+    content: none;
+}
+
+
+/* Slight caption movement */
+
+.grid__item-caption {
+    transition: transform 250ms ease;
+}
+
+.grid__item:hover .grid__item-caption {
+    transform: translateY(3px);
+}
+
+
+@media (max-width: 420px) {
+
+    .collection-page {
+        width: min(calc(100% - 24px), var(--max-width));
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
 }

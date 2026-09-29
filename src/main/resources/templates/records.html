@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Record Catalog</title>
 
     <link rel="stylesheet" th:href="@{/css/ui-playground.css}">
@@ -10,61 +12,179 @@
 
 <body>
 
-<main class="playground">
+<main class="collection-page">
 
-    <header class="page-header">
-        <h1>My Vinyl Records</h1>
+    <!-- Navigation -->
+    <header class="site-header">
 
-        <nav class="page-actions">
-            <a th:href="@{/records/new}">Add Record</a>
-            <a th:href="@{/scan}">Scan Shelf</a>
-        </nav>
-    </header>
-
-    <p class="empty" th:if="${#lists.isEmpty(records)}">
-        No records yet. Add one or scan a shelf to get started.
-    </p>
-
-    <div class="grid grid--effect-altair">
-
-        <a th:each="record : ${records}"
-           th:href="@{/records/{id}/edit(id=${record.id})}"
-           class="grid__item">
-
-            <div class="stack">
-
-                <div class="stack__deco"></div>
-                <div class="stack__deco"></div>
-                <div class="stack__deco"></div>
-                <div class="stack__deco"></div>
-
-                <div class="stack__figure">
-                    <img class="stack__img"
-                         th:src="${record.coverUrl != null} ? ${record.coverUrl} : @{/images/no-cover.svg}"
-                         th:alt="${record.title}"
-                         loading="lazy"
-                         onerror="this.onerror=null;this.src='/images/no-cover.svg';">
-                </div>
-
-            </div>
-
-            <div class="grid__item-caption">
-
-                <h3 class="grid__item-title" th:text="${record.title}">Album</h3>
-
-                <div class="column">
-                    <span class="column__text" th:text="${record.artist}">Artist</span>
-                </div>
-
-                <div class="column" th:if="${record.releaseYear > 0}">
-                    <span class="column__text" th:text="${record.releaseYear}">2026</span>
-                </div>
-
-            </div>
-
+        <a th:href="@{/records}" class="brand">
+            <span class="brand-mark">RC</span>
+            <span class="brand-name">Record Catalog</span>
         </a>
 
-    </div>
+        <nav class="site-nav">
+            <a th:href="@{/records}" class="nav-link active">
+                Collection
+            </a>
+
+            <a th:href="@{/scan}" class="nav-link">
+                Scan
+            </a>
+        </nav>
+
+    </header>
+
+
+    <!-- Collection heading -->
+    <section class="collection-hero">
+
+        <div class="hero-copy">
+
+            <p class="eyebrow">
+                YOUR LIBRARY
+            </p>
+
+            <h1>
+                Vinyl Collection
+            </h1>
+
+            <p class="hero-description">
+                Browse your collection or scan a shelf to automatically
+                identify and catalog records.
+            </p>
+
+        </div>
+
+
+        <div class="hero-actions">
+
+            <a th:href="@{/scan}"
+               class="button button--primary">
+                Scan Shelf
+            </a>
+
+            <a th:href="@{/records/new}"
+               class="button button--secondary">
+                Add Manually
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- Small collection summary -->
+    <section class="collection-summary">
+
+        <div class="summary-item">
+
+            <span class="summary-number"
+                  th:text="${#lists.size(records)}">
+                0
+            </span>
+
+            <span class="summary-label">
+                Records
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- Empty collection -->
+    <section class="empty-state"
+             th:if="${#lists.isEmpty(records)}">
+
+        <h2>Your shelf is empty.</h2>
+
+        <p>
+            Add a record manually or photograph your shelf
+            and let the scanner identify it.
+        </p>
+
+        <a th:href="@{/scan}"
+           class="button button--primary">
+            Scan Your First Shelf
+        </a>
+
+    </section>
+
+
+    <!-- Records -->
+    <section th:unless="${#lists.isEmpty(records)}"
+             class="collection-section">
+
+        <div class="section-heading">
+
+            <div>
+                <p class="eyebrow">COLLECTION</p>
+                <h2>All Records</h2>
+            </div>
+
+        </div>
+
+
+        <div class="grid grid--effect-altair">
+
+            <a th:each="record : ${records}"
+               th:href="@{/records/{id}/edit(id=${record.id})}"
+               class="grid__item">
+
+                <div class="stack">
+
+                    <div class="stack__deco"></div>
+                    <div class="stack__deco"></div>
+                    <div class="stack__deco"></div>
+                    <div class="stack__deco"></div>
+
+                    <div class="stack__figure">
+                    
+                        <img class="stack__img" th:src="${record.coverUrl != null}
+                                    ? ${record.coverUrl}
+                                    : @{/images/no-cover.svg}" th:alt="${record.title}" loading="lazy"
+                            onerror="this.onerror=null;this.src='/images/no-cover.svg';">
+                    
+                        <div class="record-overlay">
+                            <span>View Record</span>
+                        </div>
+                    
+                    </div>
+
+                </div>
+
+
+                <div class="grid__item-caption">
+
+                    <h3 class="grid__item-title"
+                        th:text="${record.title}">
+                        Album
+                    </h3>
+
+                    <p class="record-artist"
+                       th:text="${record.artist}">
+                        Artist
+                    </p>
+
+                    <div class="record-meta">
+                    
+                        <span class="meta-pill" th:if="${record.releaseYear > 0}" th:text="${record.releaseYear}">
+                            1977
+                        </span>
+                    
+                        <span class="meta-pill" th:if="${record.genre != null and !record.genre.isBlank()}" th:text="${record.genre}">
+                            Rock
+                        </span>
+                    
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </section>
 
 </main>
 
@@ -72,4 +192,5 @@
 <script th:src="@{/js/main.js}"></script>
 
 </body>
+
 </html>
