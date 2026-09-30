@@ -296,6 +296,11 @@ a {
     font-weight: 400;
 }
 
+.collection-card {
+    text-decoration: none;
+    color: inherit;
+}
+
 
 /* =========================
    RECORD GRID

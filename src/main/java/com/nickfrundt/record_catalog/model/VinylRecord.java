@@ -4,14 +4,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class VinylRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
+    @ManyToOne
+    private RecordCollection collection;
+    private Long id;
     private String title;
     private String artist;
     private int runtime;
@@ -135,5 +138,13 @@ public class VinylRecord {
                 ", artist='" + artist + '\'' +
                 ", releaseYear=" + releaseYear +
              '}';
+    }
+
+    public RecordCollection getCollection() {
+        return collection;
+    }
+
+    public void setCollection(RecordCollection collection) {
+        this.collection = collection;
     }
 }

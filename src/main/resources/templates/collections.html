@@ -91,9 +91,10 @@
 
         <div class="collections-grid">
 
-            <div
+            <a
                 class="collection-card"
-                th:each="collection : ${collections}">
+                th:each="collection : ${collections}"
+                th:href="@{/collections/{id}(id=${collection.id})}">
 
                 <p class="eyebrow">
                     COLLECTION
@@ -109,7 +110,7 @@
                     Description
                 </p>
 
-            </div>
+            </a>
 
         </div>
 

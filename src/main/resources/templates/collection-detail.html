@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${collection.name} + ' | Record Catalog'">
+        Collection
+    </title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/ui-playground.css}">
+</head>
+
+<body>
+
+<main class="collection-page">
+
+    <header class="site-header">
+
+        <a th:href="@{/records}" class="brand">
+            <span class="brand-mark">RC</span>
+            <span class="brand-name">Record Catalog</span>
+        </a>
+
+        <nav class="site-nav">
+
+            <a th:href="@{/records}"
+               class="nav-link">
+                Records
+            </a>
+
+            <a th:href="@{/collections}"
+               class="nav-link active">
+                Collections
+            </a>
+
+            <a th:href="@{/scan}"
+               class="nav-link">
+                Scan
+            </a>
+
+            <a th:href="@{/profile}"
+               class="nav-link">
+                Profile
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <section class="collection-hero">
+
+        <div class="hero-copy">
+
+            <p class="eyebrow">
+                COLLECTION
+            </p>
+
+            <h1 th:text="${collection.name}">
+                My Collection
+            </h1>
+
+            <p class="hero-description"
+               th:text="${collection.description}">
+                Description
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="collection-summary">
+
+        <div class="summary-item">
+
+            <span class="summary-number"
+                  th:text="${#lists.size(records)}">
+                0
+            </span>
+
+            <span class="summary-label">
+                Records
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <section
+        class="empty-state"
+        th:if="${#lists.isEmpty(records)}">
+
+        <h2>No records yet.</h2>
+
+        <p>
+            Records added to this collection will appear here.
+        </p>
+
+    </section>
+
+
+    <section
+        class="collection-section"
+        th:unless="${#lists.isEmpty(records)}">
+
+        <div class="grid grid--effect-altair">
+
+            <a th:each="record : ${records}"
+               th:href="@{/records/{id}/edit(id=${record.id})}"
+               class="grid__item">
+
+                <div class="stack">
+
+                    <div class="stack__deco"></div>
+                    <div class="stack__deco"></div>
+                    <div class="stack__deco"></div>
+                    <div class="stack__deco"></div>
+
+                    <div class="stack__figure">
+
+                        <img
+                            class="stack__img"
+                            th:src="${record.coverUrl != null}
+                                ? ${record.coverUrl}
+                                : @{/images/no-cover.svg}"
+                            th:alt="${record.title}"
+                            loading="lazy"
+                            onerror="this.onerror=null;this.src='/images/no-cover.svg';">
+
+                        <div class="record-overlay">
+                            <span>View Record</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="grid__item-caption">
+
+                    <h3
+                        class="grid__item-title"
+                        th:text="${record.title}">
+                        Album
+                    </h3>
+
+                    <p
+                        class="record-artist"
+                        th:text="${record.artist}">
+                        Artist
+                    </p>
+
+                    <div class="record-meta">
+
+                        <span
+                            class="meta-pill"
+                            th:if="${record.releaseYear > 0}"
+                            th:text="${record.releaseYear}">
+                            1977
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script th:src="@{/js/anime.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+
+</body>
+
+</html>
